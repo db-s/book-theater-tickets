@@ -28,7 +28,7 @@ curl http://localhost:3001/api/ping
 
 ## Run app via Docker
 
-To start Node.js and NongoDB services, run the following command
+To start Node.js and MongoDB services, run the following command
 
 ```sh
 docker compose up
