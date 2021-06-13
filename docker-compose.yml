@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+    app_web:
+        build: .
+        container_name: app_web
+        ports:
+            - "3001:3001"
+        depends_on:
+            - app_db_mongo
+        networks:
+            - node_app
+        volumes:
+            - .:/usr/src/app
+    app_db_mongo:
+        image: mongo
+        container_name: app_db_mongo
+        networks:
+            - node_app
+        volumes:
+            - db_data_mongo:/data/db
+networks:
+    node_app:
+        driver: bridge
+volumes:
+    db_data_mongo:
+        driver: local

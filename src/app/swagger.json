@@ -1,0 +1,449 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Theater Ticket Purchase & Analytics API",
+        "version": "1.0.0",
+        "title": "Theater Ticket Purchase & Analytics API",
+        "contact": {
+            "email": "sinha089@gmail.com"
+        }
+    },
+    "schemes": ["http"],
+    "host": "localhost:3001",
+    "basePath": "/api",
+    "security": {
+        "APIKeyHeader": []
+    },
+    "paths" : {
+        "/tickets" : {
+            "post" : {
+                "summary" : "Creates a new ticket with customer and performance details.",
+                "description": "Creates a new ticket with customer and performance details.",
+                "produces": ["application/json"],
+                "consumes": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Ticket object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateTicketBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created ticket object.",
+                        "schema": {
+                            "$ref": "#/definitions/CreateTicketResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
+            "get" : {
+                "summary" : "Fetches all tickets that has been purchased.",
+                "description": "Fetches all tickets that has been purchased.",
+                "produces": ["application/json"],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of purchased tickets.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/GetTicketsResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/tickets/{id}" : {
+            "get" : {
+                "summary" : "Fetches a ticket by it's ID.",
+                "description": "Fetches a ticket by it's ID.",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket id that needs to be fetched",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket object.",
+                        "schema": {
+                            "$ref": "#/definitions/GetTicketResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "summary" : "Updates an existing ticket with new data.",
+                "description": "Updates an existing ticket with new data.",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket id that needs to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Ticket object",
+                        "required": "false",
+                        "schema": {
+                            "$ref": "#/definitions/Ticket"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated ticket object.",
+                        "schema": {
+                            "$ref": "#/definitions/GetTicketResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "summary" : "Deletes a ticket from database.",
+                "description": "Deletes a ticket from database.",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket id that needs to be deleted",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/DeleteTicketResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/visited?method={fetchmethod}&start={startdate}&end={enddate}": {
+            "get": {
+                "summary" : "Analytics data that shows how many visitors purchased theater tickets during a perion of time on a monthly basis.",
+                "description": "Analytics data that shows how many visitors purchased theater tickets during a perion of time on a monthly basis.",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "fetchmethod",
+                        "in": "query",
+                        "description": "Select the method to fetch analytics data - database aggregation (db) or javascript algorithm (jsalgo)",
+                        "required": false,
+                        "type": "string",
+                        "default": "aggregation"
+                    },
+                    {
+                        "name": "startdate",
+                        "in": "query",
+                        "description": "Start date for the analytics count",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "enddate",
+                        "in": "query",
+                        "description": "End date for the analytics count",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Analytics data",
+                        "schema": {
+                            "$ref": "#/definitions/GetAnalyticsVisitResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/earning?method={fetchmethod}&start={startdate}&end={enddate}": {
+            "get": {
+                "summary" : "Analytics data that shows total earning from theater ticket purchase during a perion of time on a monthly basis.",
+                "description": "Analytics data that shows total earning from theater ticket purchase during a perion of time on a monthly basis.",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "fetchmethod",
+                        "in": "query",
+                        "description": "Select the method to fetch analytics data - database aggregation (db) or javascript algorithm (jsalgo)",
+                        "required": false,
+                        "type": "string",
+                        "default": "db"
+                    },
+                    {
+                        "name": "startdate",
+                        "in": "query",
+                        "description": "Start date for the analytics count",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "enddate",
+                        "in": "query",
+                        "description": "End date for the analytics count",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Analytics data",
+                        "schema": {
+                            "$ref": "#/definitions/GetAnalyticsEarningResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Ticket": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "ticketPrice": {
+                    "type": "string"
+                },
+                "performanceTitle": {
+                    "type": "string"
+                },
+                "performanceTime": {
+                    "type": "string"
+                },
+                "customerName": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "__v": {
+                    "type": "number"
+                }                                
+            }
+        },
+        "CreateTicketBody": {
+            "type": "object",
+            "properties": {
+                "customerName": {
+                    "type": "string"
+                },
+                "performanceTitle": {
+                    "type": "string"
+                },
+                "performanceTime": {
+                    "type": "string"
+                },
+                "ticketPrice": {
+                    "type": "string"
+                }
+            }
+        },
+        "CreateTicketResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "number"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "ticket": {
+                            "type": "object",
+                            "$ref": "#/definitions/Ticket"
+                        }
+                    }
+                }
+            }
+        },
+        "GetTicketsResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "number"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "tickets": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Ticket"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "GetTicketResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "number"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "ticket": {
+                            "type": "object",
+                            "$ref": "#/definitions/Ticket"
+                        }
+                    }
+                }
+            }
+        },
+        "DeleteTicketResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "number"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "success": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "GetAnalyticsVisitResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "number"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "visitorCount": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "summaryVisits": {
+                                        "type": "number"
+                                    },
+                                    "month": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "GetAnalyticsEarningResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "number"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "visitorCount": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "summaryProfit": {
+                                        "type": "number"
+                                    },
+                                    "month": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "InvalidResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "boolean"
+                },
+                "statusCode": {
+                    "type": "number"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "APIKeyHeader": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization"
+        }
+    }
+}

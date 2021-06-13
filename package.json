@@ -1,0 +1,34 @@
+{
+  "name": "book-theater-tickets",
+  "version": "1.0.0",
+  "description": "Small application to handle back-end operations of a theater ticket booking, and it's analytics",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "NODE_ENV=test jest",
+    "test:docker": "NODE_ENV=test_docker jest",
+    "start": "nodemon .",
+    "start:docker": "NODE_ENV=development_docker nodemon ."
+  },
+  "author": "Debobrata",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "mongoose": "^5.12.13",
+    "nodemon": "^2.0.7",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6"
+  },
+  "devDependencies": {
+    "jest": "^27.0.4"
+  },
+  "jest": {
+    "verbose": true,
+    "rootDir": "./src/app/__tests__",
+    "testPathIgnorePatterns": [
+      "<rootDir>/seed"
+    ],
+    "maxWorkers": 1
+  }
+}
