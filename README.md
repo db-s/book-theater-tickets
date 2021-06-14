@@ -4,15 +4,23 @@ This is a demo application with a list of APIs to handle an imaginary theater ti
 
 # Get Started
 
+## Install Node Modules
+
+Run the following command to install node modules
+
+```sh
+npm i
+```
+
 ## Run app directly
 
-To start the server, run the following command
+Start the server
 
 ```sh
 npm start
 ```
 
-To run tests, run the following command
+Run tests
 
 ```sh
 npm test
@@ -28,13 +36,13 @@ curl http://localhost:3001/api/ping
 
 ## Run app via Docker
 
-To start Node.js and MongoDB services, run the following command
+Start Node.js and MongoDB services
 
 ```sh
 docker compose up
 ```
 
-To run tests on Docker container, run the following command
+Run tests on Docker container
 
 ```sh
 docker container exec -it app_web /bin/bash -c 'npm run test:docker'
